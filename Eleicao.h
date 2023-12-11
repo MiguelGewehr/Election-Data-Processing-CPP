@@ -2,11 +2,11 @@
 #define _ELEICAO_H_
 #include <map>
 #include <string>
-#include <Candidato.h>
+#include "Candidato.h"
 
 using namespace std;
 
-class
+class Eleicao
 {
 private:
     std::map<string, Candidato> candidatos;
@@ -18,6 +18,7 @@ private:
     int numVotosTotais;
 
 public:
+    Eleicao(int tipoDeputado);
     int getNumVotosTotais();
     int getTipoDeputado();
     int getNumVotosLegenda();
