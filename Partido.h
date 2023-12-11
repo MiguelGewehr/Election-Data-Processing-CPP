@@ -1,5 +1,6 @@
 #ifndef _PARTIDO_H_
 #define _PARTIDO_H_
+#include "Candidato.h"
 
 class Partido
 {
@@ -9,10 +10,10 @@ class Partido
     int numVotosLegenda;
     int numVotosNominal;
     int numCandidatosEleitos;
-    Candidato candidatoMenosVotado;
+   // Candidato candidatoMenosVotado;
 
 public:
-    void somaVotos();
+    /*void somaVotos();
     string getNumPartido();
     string getSiglaPartido();
     int getNumVotos();
@@ -24,6 +25,7 @@ public:
     void somaVotosNominal(int numVotos);
     int getNumCandidatosEleitos();
     void incrementaNumCandidatosEleitos();
+    */
 };
 
 #endif
