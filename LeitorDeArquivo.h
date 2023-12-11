@@ -13,14 +13,7 @@ private:
 
 public:
     LeitorDeArquivo(string caminho);
-    void LeitorDeArquivo:: leitura_candidatos(Eleicao eleicao);
-    ~LeitorDeArquivo();
+    void leitura_candidatos(Eleicao eleicao);
 };
-
-
-
-LeitorDeArquivo::~LeitorDeArquivo()
-{
-}
 
 #endif
