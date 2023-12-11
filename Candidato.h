@@ -9,7 +9,8 @@ using namespace std;
 #include "Partido.h"
 #include "Federacao.h"
 
-class Candidato{
+class Candidato
+{
     int cargo;
     string numCandidato;
     string nomeCandidato;
@@ -20,6 +21,19 @@ class Candidato{
     int genero;
     bool votosVaoParaLegenda;
     int numVotos;
+
+public:
+    void somaVotos(int numVotos);
+    int getCargo();
+    string getNumCandidato();
+    string getNomeCandidato();
+    Partido getPartido();
+    Federacao getFederacao();
+    string getDataNascimento();
+    bool getCandidatoEleito();
+    int getGenero();
+    bool getVotosVaoParaLegenda();
+    int getNumVotos() ;
 };
 
 #endif
