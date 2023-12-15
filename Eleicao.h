@@ -4,6 +4,7 @@
 #include <string>
 #include "Candidato.h"
 #include "Partido.h"
+#include <vector>
 
 using namespace std;
 
@@ -34,10 +35,12 @@ public:
     bool candidatoExiste(string key);
     Candidato* getCandidato(string key);
     void somaVotosLegenda(int numVotos);
+    vector<Candidato*> ordenaCandidatosEleitosPorVoto();
 };
 
 void leitura_candidatos(Eleicao &eleicao, char path[]);
 void leitura_votacao(Eleicao &eleicao, char path[]);
 void gerarRelatorio(Eleicao &eleicao);
+vector<Candidato*> relatorioDois(Eleicao &eleicao);
 
 #endif

@@ -27,14 +27,14 @@ public:
     void somaVotos(int numVotos);
     int getCargo();
     string getNumCandidato() const;
-    string getNomeCandidato();
+    string getNome() const;
     Partido getPartido();
     Federacao getFederacao();
     string getDataNascimento();
     bool getCandidatoEleito();
     int getGenero();
     bool getVotosVaoParaLegenda() const;
-    int getNumVotos() ;
+    int getNumVotos() const;
 };
 
 #endif

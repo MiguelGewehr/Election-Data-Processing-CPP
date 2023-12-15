@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string.h>
+#include <algorithm>
 
 Eleicao::Eleicao(int tipoDeputado) : tipoDeputado(tipoDeputado){};
 
@@ -54,6 +55,23 @@ Candidato* Eleicao::getCandidato(string key){
 
 void Eleicao::somaVotosLegenda(int numVotos){
     this->numVotosLegenda += numVotos;
+}
+
+vector<Candidato*> Eleicao::ordenaCandidatosEleitosPorVoto(){
+    
+    std::vector<std::pair<std::string, Candidato*>> eleitos(candidatosEleitos.begin(), candidatosEleitos.end());
+
+    std::sort(eleitos.begin(), eleitos.end(),
+              [](const auto& a, const auto& b) {
+                  return a.second->getNumVotos() > b.second->getNumVotos();
+              });
+
+    std::vector<Candidato*> candidatosOrdenados;
+    for (const auto& par : eleitos) {
+        candidatosOrdenados.push_back(par.second);
+    }
+
+    return candidatosOrdenados;
 }
 
 std::string removerAspas(const std::string &str)
@@ -248,4 +266,27 @@ void leitura_votacao(Eleicao &eleicao, char path[])
 void gerarRelatorio(Eleicao &eleicao){
     
     printf("Número de vagas: %d\n\n", eleicao.getNumCandidatosEleitos());
+
+    vector<Candidato*> eleitosOrdenados = relatorioDois(eleicao);
 }
+
+vector<Candidato*> relatorioDois(Eleicao &eleicao){
+
+        vector<Candidato*> candidatosEleitosOrdenados = eleicao.ordenaCandidatosEleitosPorVoto();
+
+        string deputado;
+        
+        if(eleicao.getTipoDeputado() == 7) deputado = "Deputados estaduais";
+        else deputado = "Deputados federais";
+        
+        cout << deputado + " eleitos:" << endl;
+
+        int i=1;
+
+        for (Candidato *c : candidatosEleitosOrdenados) {
+            cout << i << " " << c->getNome() << ": " << c->getNumVotos() << std::endl;
+            i++;    
+        }
+
+        return candidatosEleitosOrdenados;
+    }

@@ -18,3 +18,11 @@ bool Candidato::getVotosVaoParaLegenda() const{
 void Candidato::somaVotos(int numVotos){
     this->numVotos += numVotos;
 }
+
+int Candidato::getNumVotos() const{
+    return this->numVotos;
+}
+
+string Candidato::getNome() const{
+    return this->nomeCandidato;
+}
