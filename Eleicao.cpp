@@ -7,130 +7,179 @@
 
 Eleicao::Eleicao(int tipoDeputado) : tipoDeputado(tipoDeputado){};
 
-int Eleicao::getTipoDeputado() const{
+string iso_8859_1_to_utf8(string &str)
+{
+    // adaptado de: https://stackoverflow.com/a/39884120 :-)
+    string strOut;
+    for (string::iterator it = str.begin(); it != str.end(); ++it)
+    {
+        uint8_t ch = *it;
+        if (ch < 0x80)
+        {
+            // já está na faixa ASCII (bit mais significativo 0), só copiar para a saída
+            strOut.push_back(ch);
+        }
+        else
+        {
+            // está na faixa ASCII-estendido, escrever 2 bytes de acordo com UTF-8
+            // o primeiro byte codifica os 2 bits mais significativos do byte original (ISO-8859-1)
+            strOut.push_back(0b11000000 | (ch >> 6));
+            // o segundo byte codifica os 6 bits menos significativos do byte original (ISO-8859-1)
+            strOut.push_back(0b10000000 | (ch & 0b00111111));
+        }
+    }
+    return strOut;
+}
+
+int Eleicao::getTipoDeputado() const
+{
     return this->tipoDeputado;
 }
 
-bool Eleicao::partidoExiste(string key){
+bool Eleicao::partidoExiste(string key)
+{
     auto it = this->partidos.find(key);
-    if (it != this->partidos.end()) 
+    if (it != this->partidos.end())
         return true;
-    else 
-        return false;      
+    else
+        return false;
 }
 
-Partido* Eleicao::getPartido(string key){
+Partido *Eleicao::getPartido(string key)
+{
     auto it = this->partidos.find(key);
     return (it->second);
 }
 
-void Eleicao::addPartido(Partido *p){
-    this->partidos.insert({p->getNumPartido(),p});
+void Eleicao::addPartido(Partido *p)
+{
+    this->partidos.insert({p->getNumPartido(), p});
 }
 
-void Eleicao::addCandidatoEleito(Candidato *c){
+void Eleicao::addCandidatoEleito(Candidato *c)
+{
     this->candidatosEleitos.insert({c->getNumCandidato(), c});
 }
 
-void Eleicao::addCandidato(Candidato *c){
+void Eleicao::addCandidato(Candidato *c)
+{
     this->candidatos.insert({c->getNumCandidato(), c});
 }
 
-int Eleicao::getNumCandidatosEleitos(){
+int Eleicao::getNumCandidatosEleitos()
+{
     return this->candidatosEleitos.size();
 }
 
-bool Eleicao::candidatoExiste(string key){
+bool Eleicao::candidatoExiste(string key)
+{
     auto it = this->candidatos.find(key);
-    if (it != this->candidatos.end()) 
+    if (it != this->candidatos.end())
         return true;
-    else 
+    else
         return false;
 }
 
-Candidato* Eleicao::getCandidato(string key){
+Candidato *Eleicao::getCandidato(string key)
+{
     auto it = this->candidatos.find(key);
     return it->second;
 }
 
-void Eleicao::somaVotosLegenda(int numVotos){
+void Eleicao::somaVotosLegenda(int numVotos)
+{
     this->numVotosLegenda += numVotos;
 }
 
-vector<Candidato*> Eleicao::ordenaCandidatosEleitosPorVoto(){
-    
-    std::vector<std::pair<std::string, Candidato*>> eleitos(candidatosEleitos.begin(), candidatosEleitos.end());
+vector<Candidato *> Eleicao::ordenaCandidatosEleitosPorVoto()
+{
+
+    std::vector<std::pair<std::string, Candidato *>> eleitos(candidatosEleitos.begin(), candidatosEleitos.end());
 
     std::sort(eleitos.begin(), eleitos.end(),
-              [](const auto& a, const auto& b) {
+              [](const auto &a, const auto &b)
+              {
                   return a.second->getNumVotos() > b.second->getNumVotos();
               });
 
-    std::vector<Candidato*> candidatosOrdenados;
-    for (const auto& par : eleitos) {
+    std::vector<Candidato *> candidatosOrdenados;
+    for (const auto &par : eleitos)
+    {
         candidatosOrdenados.push_back(par.second);
     }
 
     return candidatosOrdenados;
 }
 
-vector<Candidato*> Eleicao::ordenaCandidatosPorVoto(int tipoDeputado){
-    
-    std::vector<std::pair<std::string, Candidato*>> eleitos(candidatos.begin(), candidatos.end());
+vector<Candidato *> Eleicao::ordenaCandidatosPorVoto(int tipoDeputado)
+{
+
+    std::vector<std::pair<std::string, Candidato *>> eleitos(candidatos.begin(), candidatos.end());
 
     std::sort(eleitos.begin(), eleitos.end(),
-              [](const auto& a, const auto& b) {
+              [](const auto &a, const auto &b)
+              {
                   return a.second->getNumVotos() > b.second->getNumVotos();
               });
 
-    std::vector<Candidato*> candidatosOrdenados;
-    for (const auto& par : eleitos) {
-        if(par.second->getCargo() == tipoDeputado)
+    std::vector<Candidato *> candidatosOrdenados;
+    for (const auto &par : eleitos)
+    {
+        if (par.second->getCargo() == tipoDeputado)
             candidatosOrdenados.push_back(par.second);
     }
 
     return candidatosOrdenados;
 }
-void Eleicao::calculaVotosNominais(vector<Candidato*> &candidatos){
-    for(Candidato *c : candidatos){
+void Eleicao::calculaVotosNominais(vector<Candidato *> &candidatos)
+{
+    for (Candidato *c : candidatos)
+    {
         c->getPartido()->somaVotosNominal(c->getNumVotos());
-        this->numVotosNominais += c->getNumVotos();   
-    }  
+        this->numVotosNominais += c->getNumVotos();
+    }
 }
 
-vector<Partido*> Eleicao::ordenaVotosPartidos(){
+vector<Partido *> Eleicao::ordenaVotosPartidos()
+{
 
-        vector<Partido*> partidos;
+    vector<Partido *> partidos;
 
-        for (const auto& entry : this->partidos) {
-            Partido *partido = entry.second; 
-            partido->somaVotos();
-            partidos.push_back(partido);
-        }
+    for (const auto &entry : this->partidos)
+    {
+        Partido *partido = entry.second;
+        partido->somaVotos();
+        partidos.push_back(partido);
+    }
 
-        std::sort(partidos.begin(), partidos.end(),
-              [](const auto& a, const auto& b) {
+    std::sort(partidos.begin(), partidos.end(),
+              [](const auto &a, const auto &b)
+              {
                   return a->getNumVotos() > b->getNumVotos();
               });
 
-        return partidos;
-    }
-void Eleicao::calculaPorcentagemGenero(vector<Candidato*> candidatosEleitos){
-    
-    int  mulher = 0;
+    return partidos;
+}
+void Eleicao::calculaPorcentagemGenero(vector<Candidato *> candidatosEleitos)
+{
+
+    int mulher = 0;
     int homem = 0;
 
-    for (Candidato *c : candidatosEleitos) {
-        if(c->getGenero() == 2) homem++;
-            else mulher++; 
-        }
+    for (Candidato *c : candidatosEleitos)
+    {
+        if (c->getGenero() == 2)
+            homem++;
+        else
+            mulher++;
+    }
 
-        double porcentagemM = mulher *100/candidatosEleitos.size();
-        double porcentagemH = homem *100/candidatosEleitos.size();
+    double porcentagemM = mulher * 100 / candidatosEleitos.size();
+    double porcentagemH = homem * 100 / candidatosEleitos.size();
 
-        cout << "Feminino:  " << mulher << " (" << porcentagemM << "%)" << endl;
-        cout << "Masculino: " << homem << " (" << porcentagemH << "%)" << endl;    
-}    
+    cout << "Feminino:  " << mulher << " (" << porcentagemM << "%)" << endl;
+    cout << "Masculino: " << homem << " (" << porcentagemH << "%)" << endl;
+}
 
 std::string removerAspas(const std::string &str)
 {
@@ -147,9 +196,10 @@ std::string removerAspas(const std::string &str)
     return novaString;
 }
 
-void leLixo(istringstream &linhaStream, int n){
+void leLixo(istringstream &linhaStream, int n)
+{
     string lixo;
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
         getline(linhaStream, lixo, ';');
 }
 
@@ -159,7 +209,7 @@ void leitura_candidatos(Eleicao &eleicao, char path[])
     ifstream inputStream(path);
     string linha;
     getline(inputStream, linha); // cabeçalho
-    
+
     while (getline(inputStream, linha))
     {
         istringstream linhaStream(linha);
@@ -193,12 +243,12 @@ void leitura_candidatos(Eleicao &eleicao, char path[])
         int numFederacao = stoi(removerAspas(aux)); // numero da fereacao (-1 = sem federacao)
 
         leLixo(linhaStream, 11);
-        
+
         getline(linhaStream, aux, ';');
         string dataNascimento = aux;
 
         leLixo(linhaStream, 2);
-        
+
         getline(linhaStream, aux, ';');
         int genero = stoi(removerAspas(aux)); // 2-masculino e 4-feminino
 
@@ -209,7 +259,7 @@ void leitura_candidatos(Eleicao &eleicao, char path[])
 
         bool candidatoEleito;
 
-        if(sit_eleito == 2 || sit_eleito == 3)
+        if (sit_eleito == 2 || sit_eleito == 3)
             candidatoEleito = true;
         else
             candidatoEleito = false;
@@ -221,7 +271,7 @@ void leitura_candidatos(Eleicao &eleicao, char path[])
 
         bool votosVaoParaLegenda;
 
-        if(destinacao_votos == "Válido (legenda)")
+        if (destinacao_votos == "Válido (legenda)")
             votosVaoParaLegenda = true;
         else
             votosVaoParaLegenda = false;
@@ -233,21 +283,25 @@ void leitura_candidatos(Eleicao &eleicao, char path[])
 
         Partido *partido;
 
-        if(!existePartido){
+        if (!existePartido)
+        {
             partido = new Partido(numPartido, siglaPartido);
             eleicao.addPartido(partido);
         }
-        else{ 
+        else
+        {
             partido = eleicao.getPartido(numPartido);
         }
-        
-        if (situacaoCandidato == "2" || situacaoCandidato == "16" || votosVaoParaLegenda){
+
+        if (situacaoCandidato == "2" || situacaoCandidato == "16" || votosVaoParaLegenda)
+        {
 
             Federacao federacao(numFederacao);
 
             Candidato *candidato = new Candidato(cargo, numCandidato, nomeCandidato, partido, federacao, dataNascimento, genero, votosVaoParaLegenda, candidatoEleito);
 
-            if(candidatoEleito && cargo == eleicao.getTipoDeputado()){
+            if (candidatoEleito && cargo == eleicao.getTipoDeputado())
+            {
                 eleicao.addCandidatoEleito(candidato);
                 candidato->getPartido()->incrementaNumCandidatosEleitos();
             }
@@ -264,7 +318,7 @@ void leitura_votacao(Eleicao &eleicao, char path[])
     ifstream inputStream(path);
     string linha;
     getline(inputStream, linha); // cabeçalho
-    int i=0;
+    int i = 0;
 
     while (getline(inputStream, linha))
     {
@@ -272,7 +326,7 @@ void leitura_votacao(Eleicao &eleicao, char path[])
         string aux;
 
         leLixo(linhaStream, 17);
-        
+
         getline(linhaStream, aux, ';');
         aux = removerAspas(aux);
 
@@ -287,45 +341,48 @@ void leitura_votacao(Eleicao &eleicao, char path[])
         {
             i++;
             leLixo(linhaStream, 1);
-            
+
             getline(linhaStream, aux, ';');
 
             aux = removerAspas(aux);
 
-            
             int numVotos = stoi(aux);
 
-
-            if(eleicao.candidatoExiste(nrVotavel)){
+            if (eleicao.candidatoExiste(nrVotavel))
+            {
 
                 Candidato *c = eleicao.getCandidato(nrVotavel);
-                
+
                 Partido *p = c->getPartido();
 
-                if(c->getVotosVaoParaLegenda()){
+                if (c->getVotosVaoParaLegenda())
+                {
                     p->somaVotosLegenda(numVotos);
                     eleicao.somaVotosLegenda(numVotos);
                 }
-                else{
+                else
+                {
                     c->somaVotos(numVotos);
                 }
-            }    
-                if(eleicao.partidoExiste(nrVotavel)){
-                    Partido *p = eleicao.getPartido(nrVotavel);
-                    p->somaVotosLegenda(numVotos);
-                    eleicao.somaVotosLegenda(numVotos);
-                }
-        }        
+            }
+            if (eleicao.partidoExiste(nrVotavel))
+            {
+                Partido *p = eleicao.getPartido(nrVotavel);
+                p->somaVotosLegenda(numVotos);
+                eleicao.somaVotosLegenda(numVotos);
+            }
+        }
     }
 }
 
-void gerarRelatorio(Eleicao &eleicao, int tipoDeputado){
-    
+void gerarRelatorio(Eleicao &eleicao, int tipoDeputado)
+{
+
     printf("Número de vagas: %d\n\n", eleicao.getNumCandidatosEleitos());
 
-    vector<Candidato*> eleitosOrdenados = relatorioDois(eleicao);
+    vector<Candidato *> eleitosOrdenados = relatorioDois(eleicao);
 
-    vector<Candidato*> candidatosOrdenados = relatorioTresEQuatro(eleicao, tipoDeputado);
+    vector<Candidato *> candidatosOrdenados = relatorioTresEQuatro(eleicao, tipoDeputado);
 
     relatorioCinco(eleicao, eleitosOrdenados, candidatosOrdenados);
 
@@ -334,125 +391,184 @@ void gerarRelatorio(Eleicao &eleicao, int tipoDeputado){
     relatorioNove(eleicao, eleitosOrdenados);
 }
 
-vector<Candidato*> relatorioDois(Eleicao &eleicao){
+vector<Candidato *> relatorioDois(Eleicao &eleicao)
+{
 
-        vector<Candidato*> candidatosEleitosOrdenados = eleicao.ordenaCandidatosEleitosPorVoto();
+    vector<Candidato *> candidatosEleitosOrdenados = eleicao.ordenaCandidatosEleitosPorVoto();
 
-        string deputado;
-        
-        if(eleicao.getTipoDeputado() == 7) deputado = "Deputados estaduais";
-        else deputado = "Deputados federais";
-        
-        cout << deputado + " eleitos:" << endl;
+    string deputado;
 
-        int i=1;
+    if (eleicao.getTipoDeputado() == 7)
+        deputado = "Deputados estaduais";
+    else
+        deputado = "Deputados federais";
 
-        for (Candidato *c : candidatosEleitosOrdenados) {
-            cout << i << " - " << c->getNome() << "(" << c->getPartido()->getSiglaPartido() << ", " << c->getNumVotos() << " votos)"<< std::endl;
-            i++;    
+    cout << deputado + " eleitos:" << endl;
+
+    int i = 1;
+
+    for (Candidato *c : candidatosEleitosOrdenados)
+    {
+        cout << i << " - ";
+        if (c->getFederacao().getNumFederacao() != -1)
+        {
+            cout << "*";
         }
-
-        return candidatosEleitosOrdenados;
+        string nome = c->getNome();
+        string siglaPartido = c->getPartido()->getSiglaPartido();
+        cout << iso_8859_1_to_utf8(nome) << " (" << iso_8859_1_to_utf8(siglaPartido) << ", " << c->getNumVotos() << " votos)" << std::endl;
+        i++;
     }
 
-    vector<Candidato*> relatorioTresEQuatro(Eleicao &eleicao, int TipoDeputado){
+    return candidatosEleitosOrdenados;
+}
 
-        cout << "\nCandidatos mais votados (em ordem decrescente de votação e respeitando número de vagas):" << endl;
+vector<Candidato *> relatorioTresEQuatro(Eleicao &eleicao, int TipoDeputado)
+{
 
-        vector<Candidato*> candidatosOrdenados = eleicao.ordenaCandidatosPorVoto(TipoDeputado);
+    cout << "\nCandidatos mais votados (em ordem decrescente de votação e respeitando número de vagas):" << endl;
 
-        vector<Candidato*> candidatosQueSeriamEleitos;
-        int idxCandidatosQueSeriamEleitos[eleicao.getNumCandidatosEleitos()]; 
+    vector<Candidato *> candidatosOrdenados = eleicao.ordenaCandidatosPorVoto(TipoDeputado);
 
-        int j = 1;
-        int idx = 0;
-        
-        for(Candidato* c : candidatosOrdenados){
-            
-            if(j > eleicao.getNumCandidatosEleitos()) break;
+    vector<Candidato *> candidatosQueSeriamEleitos;
+    int idxCandidatosQueSeriamEleitos[eleicao.getNumCandidatosEleitos()];
 
-            if(!c->getCandidatoEleito()){
-                candidatosQueSeriamEleitos.push_back(c);
-                idxCandidatosQueSeriamEleitos[idx] = j;
-                idx++;
-            }
+    int j = 1;
+    int idx = 0;
 
-            cout << j << " - " << c->getNome() << "(" << c->getPartido()->getSiglaPartido() << ", " << c->getNumVotos() << " votos)"<< endl;
-            j++;
+    for (Candidato *c : candidatosOrdenados)
+    {
+
+        if (j > eleicao.getNumCandidatosEleitos())
+            break;
+
+        if (!c->getCandidatoEleito())
+        {
+            candidatosQueSeriamEleitos.push_back(c);
+            idxCandidatosQueSeriamEleitos[idx] = j;
+            idx++;
         }
 
-        cout << "\nTeriam sido eleitos se a votação fosse majoritária, e não foram eleitos:\n(com sua posição no ranking de mais votados)" << endl;
-        
-        int i=0;
-        for(Candidato *c : candidatosQueSeriamEleitos){
-           cout << idxCandidatosQueSeriamEleitos[i] << " - " << c->getNome() << "(" << c->getPartido()->getSiglaPartido() << ", " << c->getNumVotos() << " votos)"<< endl;
-           i++; 
+        string nome = c->getNome();
+        string siglaPartido = c->getPartido()->getSiglaPartido();
+        cout << j << " - ";
+
+        if (c->getFederacao().getNumFederacao() != -1)
+        {
+            cout << "*";
         }
-        
-        return candidatosOrdenados;
+
+        cout << iso_8859_1_to_utf8(nome) << " (" << iso_8859_1_to_utf8(siglaPartido) << ", " << c->getNumVotos() << " votos)" << endl;
+        j++;
     }
 
-    void relatorioCinco(Eleicao eleicao, vector<Candidato*> candidatosEleitosOrdenados, vector<Candidato*> candidatosOrdenados){
+    cout << "\nTeriam sido eleitos se a votação fosse majoritária, e não foram eleitos:\n(com sua posição no ranking de mais votados)" << endl;
 
-        vector<Candidato*> candidatosQueNaoSeriamEleitos;
+    int i = 0;
+    for (Candidato *c : candidatosQueSeriamEleitos)
+    {
+        string nome = c->getNome();
+        string siglaPartido = c->getPartido()->getSiglaPartido();
 
-        int idxCandidato[candidatosEleitosOrdenados.size()];
-        int idx=0; 
-        
-        int lastSize = candidatosEleitosOrdenados.size() -1;
+        cout << idxCandidatosQueSeriamEleitos[i] << " - ";
 
-        for(Candidato *c : candidatosEleitosOrdenados){
-
-            if(c->getNumVotos() < candidatosOrdenados[lastSize]->getNumVotos()){
-                
-                auto it = find(candidatosOrdenados.begin(), candidatosOrdenados.end(), c);
-                idxCandidato[idx] = distance(candidatosOrdenados.begin(), it)+1;
-                candidatosQueNaoSeriamEleitos.push_back(c);
-                idx++;
-            }
+        if (c->getFederacao().getNumFederacao() != -1)
+        {
+            cout << "*";
         }
 
-        cout << "\nEleitos, que se beneficiaram do sistema proporcional:\n(com sua posição no ranking de mais votados)" << endl;
-
-        int i=0;
-        for(Candidato *c : candidatosQueNaoSeriamEleitos){
-            cout << idxCandidato[i] << " - " << c->getNome() << "(" << c->getPartido()->getSiglaPartido() << ", " << c->getNumVotos() << " votos)"<< endl;   
-            i++;
-        }
+        cout << iso_8859_1_to_utf8(nome) << " (" << iso_8859_1_to_utf8(siglaPartido) << ", " << c->getNumVotos() << " votos)" << endl;
+        i++;
     }
 
-    void relatorioSeis(Eleicao eleicao, vector<Candidato*> candidatos){
+    return candidatosOrdenados;
+}
 
-        eleicao.calculaVotosNominais(candidatos);
+void relatorioCinco(Eleicao eleicao, vector<Candidato *> candidatosEleitosOrdenados, vector<Candidato *> candidatosOrdenados)
+{
 
-        cout << "\nVotação dos partidos e número de candidatos eleitos:" << endl;
+    vector<Candidato *> candidatosQueNaoSeriamEleitos;
 
-        vector<Partido*> partidos = eleicao.ordenaVotosPartidos();
+    int idxCandidato[candidatosEleitosOrdenados.size()];
+    int idx = 0;
 
-        int i = 1;
-        for(Partido *p : partidos){
-            
-            string candidatosEleitos;
-        
-            if(p->getNumCandidatosEleitos() > 1) candidatosEleitos = " candidatos eleitos";
-            else candidatosEleitos = " candidato eleito";
+    int lastSize = candidatosEleitosOrdenados.size() - 1;
 
-            string nominais;
+    for (Candidato *c : candidatosEleitosOrdenados)
+    {
 
-            if(p->getVotosNominal() > 1) nominais =  " nominais";
-            else nominais = " nominal";
+        if (c->getNumVotos() < candidatosOrdenados[lastSize]->getNumVotos())
+        {
 
-            string votos;
-
-            if(p->getNumVotos() > 1) votos = " votos";
-            else votos = " voto"; 
-
-            cout << i << " - " << p->getSiglaPartido() << " - " << p->getNumPartido() << ", " << p->getNumVotos() << votos << " (" << p->getVotosNominal() << nominais << " e " << p->getVotosLegenda() << " de legenda), " << p->getNumCandidatosEleitos() << candidatosEleitos << endl;
-            i++;
+            auto it = find(candidatosOrdenados.begin(), candidatosOrdenados.end(), c);
+            idxCandidato[idx] = distance(candidatosOrdenados.begin(), it) + 1;
+            candidatosQueNaoSeriamEleitos.push_back(c);
+            idx++;
         }
     }
 
-void relatorioNove(Eleicao eleicao, vector<Candidato*> candidatosEleitos){
+    cout << "\nEleitos, que se beneficiaram do sistema proporcional:\n(com sua posição no ranking de mais votados)" << endl;
+
+    int i = 0;
+    for (Candidato *c : candidatosQueNaoSeriamEleitos)
+    {
+        string nome = c->getNome();
+        string siglaPartido = c->getPartido()->getSiglaPartido();
+
+        cout << idxCandidato[i] << " - ";
+
+        if (c->getFederacao().getNumFederacao() != -1)
+        {
+            cout << "*";
+        }
+        cout << iso_8859_1_to_utf8(nome) << " (" << iso_8859_1_to_utf8(siglaPartido) << ", " << c->getNumVotos() << " votos)" << endl;
+        i++;
+    }
+}
+
+void relatorioSeis(Eleicao eleicao, vector<Candidato *> candidatos)
+{
+
+    eleicao.calculaVotosNominais(candidatos);
+
+    cout << "\nVotação dos partidos e número de candidatos eleitos:" << endl;
+
+    vector<Partido *> partidos = eleicao.ordenaVotosPartidos();
+
+    int i = 1;
+    for (Partido *p : partidos)
+    {
+
+        string candidatosEleitos;
+
+        if (p->getNumCandidatosEleitos() > 1)
+            candidatosEleitos = " candidatos eleitos";
+        else
+            candidatosEleitos = " candidato eleito";
+
+        string nominais;
+
+        if (p->getVotosNominal() > 1)
+            nominais = " nominais";
+        else
+            nominais = " nominal";
+
+        string votos;
+
+        if (p->getNumVotos() > 1)
+            votos = " votos";
+        else
+            votos = " voto";
+
+        string sigla = p->getSiglaPartido();
+
+        cout << i << " - " << iso_8859_1_to_utf8(sigla) << " - " << p->getNumPartido() << ", " << p->getNumVotos() << votos << " (" << p->getVotosNominal() << nominais << " e " << p->getVotosLegenda() << " de legenda), " << p->getNumCandidatosEleitos() << candidatosEleitos << endl;
+        i++;
+    }
+}
+
+void relatorioNove(Eleicao eleicao, vector<Candidato *> candidatosEleitos)
+{
 
     cout << "\nEleitos, por gênero:" << endl;
 
