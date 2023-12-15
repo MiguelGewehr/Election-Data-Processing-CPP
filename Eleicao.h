@@ -31,6 +31,9 @@ public:
     int getNumCandidatosEleitos();
     bool partidoExiste(string key);
     Partido* getPartido(string key);
+    bool candidatoExiste(string key);
+    Candidato* getCandidato(string key);
+    void somaVotosLegenda(int numVotos);
 };
 
 void leitura_candidatos(Eleicao &eleicao, char path[]);

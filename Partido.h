@@ -16,6 +16,7 @@ public:
     Partido(string numPartido, string siglaPartido);
     string getNumPartido() const;
     void incrementaNumCandidatosEleitos();
+    void somaVotosLegenda(int numVotos);
     /*void somaVotos();
     string getSiglaPartido();
     int getNumVotos();
@@ -23,7 +24,6 @@ public:
     void setCandidatoMenosVotado(Candidato candidatoMenosVotado);
     int getVotosLegenda();
     int getVotosNominal();
-    void somaVotosLegenda(int numVotos);
     void somaVotosNominal(int numVotos);
     int getNumCandidatosEleitos();
     */

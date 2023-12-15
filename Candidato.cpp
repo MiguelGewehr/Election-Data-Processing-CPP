@@ -10,3 +10,11 @@ string Candidato::getNumCandidato() const{
 Partido Candidato::getPartido(){
     return *(this->partido);
 }
+
+bool Candidato::getVotosVaoParaLegenda() const{
+    return this->votosVaoParaLegenda;
+}
+
+void Candidato::somaVotos(int numVotos){
+    this->numVotos += numVotos;
+}

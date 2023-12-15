@@ -33,7 +33,7 @@ public:
     string getDataNascimento();
     bool getCandidatoEleito();
     int getGenero();
-    bool getVotosVaoParaLegenda();
+    bool getVotosVaoParaLegenda() const;
     int getNumVotos() ;
 };
 

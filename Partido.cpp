@@ -9,3 +9,7 @@ string Partido::getNumPartido() const{
 void Partido::incrementaNumCandidatosEleitos(){
     this->numCandidatosEleitos++;
 }
+
+void Partido::somaVotosLegenda(int numVotos){
+    this->numVotosLegenda += numVotos;
+}

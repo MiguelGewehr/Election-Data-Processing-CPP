@@ -39,6 +39,23 @@ int Eleicao::getNumCandidatosEleitos(){
     return this->candidatosEleitos.size();
 }
 
+bool Eleicao::candidatoExiste(string key){
+    auto it = this->candidatos.find(key);
+    if (it != this->candidatos.end()) 
+        return true;
+    else 
+        return false;
+}
+
+Candidato* Eleicao::getCandidato(string key){
+    auto it = this->candidatos.find(key);
+    return it->second;
+}
+
+void Eleicao::somaVotosLegenda(int numVotos){
+    this->numVotosLegenda += numVotos;
+}
+
 std::string removerAspas(const std::string &str)
 {
     std::string novaString = str;
@@ -201,6 +218,27 @@ void leitura_votacao(Eleicao &eleicao, char path[])
 
             
             int numVotos = stoi(aux);
+
+
+            if(eleicao.candidatoExiste(nrVotavel)){
+
+                Candidato *c = eleicao.getCandidato(nrVotavel);
+                
+                Partido p = c->getPartido();
+
+                if(c->getVotosVaoParaLegenda()){
+                    p.somaVotosLegenda(numVotos);
+                    eleicao.somaVotosLegenda(numVotos);
+                }
+                else{
+                    c->somaVotos(numVotos);
+                }
+            }    
+                if(eleicao.partidoExiste(nrVotavel)){
+                    Partido *p = eleicao.getPartido(nrVotavel);
+                    p->somaVotosLegenda(numVotos);
+                    eleicao.somaVotosLegenda(numVotos);
+                }
         }
         
     }
