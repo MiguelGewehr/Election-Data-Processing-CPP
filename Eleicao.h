@@ -21,12 +21,12 @@ private:
 
 public:
     Eleicao(int tipoDeputado);
-    int getNumVotosTotais();
+    int getNumVotosTotais() const;
     int getTipoDeputado() const;
-    int getNumVotosLegenda();
+    int getNumVotosLegenda() const;
     void addCandidato(Candidato *c);
     void addCandidatoEleito(Candidato *c);
-    int getNumVotosNominais();
+    int getNumVotosNominais() const;
     void addPartido(Partido *p);
     void printaCandidatos();
     int getNumCandidatosEleitos();
@@ -40,6 +40,8 @@ public:
     void calculaVotosNominais(vector<Candidato*> &candidatos);
     vector<Partido*> ordenaVotosPartidos();
     void calculaPorcentagemGenero(vector<Candidato*> candidatosEleitos);
+    void relatorioDez(Eleicao eleicao);
+    void somaVotosTotais();
 };
 
 void leitura_candidatos(Eleicao &eleicao, char path[]);
@@ -48,7 +50,8 @@ void gerarRelatorio(Eleicao &eleicao, int tipoDeputado);
 vector<Candidato*> relatorioDois(Eleicao &eleicao);
 vector<Candidato*> relatorioTresEQuatro(Eleicao &eleicao, int TipoDeputado);
 void relatorioCinco(Eleicao eleicao, vector<Candidato*> candidatosEleitosOrdenados, vector<Candidato*> candidatosOrdenados);
-void relatorioSeis(Eleicao eleicao, vector<Candidato*> candidatos);
+void relatorioSeis(Eleicao &eleicao, vector<Candidato*> candidatos);
 void relatorioNove(Eleicao eleicao, vector<Candidato*> candidatosEleitos);
+void relatorioDez(Eleicao eleicao);
 
 #endif
