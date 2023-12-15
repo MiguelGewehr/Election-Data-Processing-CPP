@@ -91,30 +91,46 @@ vector<Candidato*> Eleicao::ordenaCandidatosPorVoto(int tipoDeputado){
 
     return candidatosOrdenados;
 }
-void Eleicao::calculaVotosNominais(vector<Candidato*> candidatos){
+void Eleicao::calculaVotosNominais(vector<Candidato*> &candidatos){
     for(Candidato *c : candidatos){
-        c->getPartido().somaVotosNominal(c->getNumVotos());
+        c->getPartido()->somaVotosNominal(c->getNumVotos());
         this->numVotosNominais += c->getNumVotos();   
     }  
 }
 
 vector<Partido*> Eleicao::ordenaVotosPartidos(){
-    
-    vector<pair<string, Partido*>> eleitos(partidos.begin(), partidos.end());
 
-    std::sort(eleitos.begin(), eleitos.end(),
+        vector<Partido*> partidos;
+
+        for (const auto& entry : this->partidos) {
+            Partido *partido = entry.second; 
+            partido->somaVotos();
+            partidos.push_back(partido);
+        }
+
+        std::sort(partidos.begin(), partidos.end(),
               [](const auto& a, const auto& b) {
-                  return a.second->getNumVotos() > b.second->getNumVotos();
+                  return a->getNumVotos() > b->getNumVotos();
               });
 
-    std::vector<Partido*> partidosOrdenados;
-    for (const auto& par : eleitos) {    
-        partidosOrdenados.push_back(par.second);
+        return partidos;
     }
+void Eleicao::calculaPorcentagemGenero(vector<Candidato*> candidatosEleitos){
+    
+    int  mulher = 0;
+    int homem = 0;
 
-    return partidosOrdenados;
+    for (Candidato *c : candidatosEleitos) {
+        if(c->getGenero() == 2) homem++;
+            else mulher++; 
+        }
 
-}
+        double porcentagemM = mulher *100/candidatosEleitos.size();
+        double porcentagemH = homem *100/candidatosEleitos.size();
+
+        cout << "Feminino:  " << mulher << " (" << porcentagemM << "%)" << endl;
+        cout << "Masculino: " << homem << " (" << porcentagemH << "%)" << endl;    
+}    
 
 std::string removerAspas(const std::string &str)
 {
@@ -233,7 +249,7 @@ void leitura_candidatos(Eleicao &eleicao, char path[])
 
             if(candidatoEleito && cargo == eleicao.getTipoDeputado()){
                 eleicao.addCandidatoEleito(candidato);
-                candidato->getPartido().incrementaNumCandidatosEleitos();
+                candidato->getPartido()->incrementaNumCandidatosEleitos();
             }
 
             eleicao.addCandidato(candidato);
@@ -284,10 +300,10 @@ void leitura_votacao(Eleicao &eleicao, char path[])
 
                 Candidato *c = eleicao.getCandidato(nrVotavel);
                 
-                Partido p = c->getPartido();
+                Partido *p = c->getPartido();
 
                 if(c->getVotosVaoParaLegenda()){
-                    p.somaVotosLegenda(numVotos);
+                    p->somaVotosLegenda(numVotos);
                     eleicao.somaVotosLegenda(numVotos);
                 }
                 else{
@@ -314,6 +330,8 @@ void gerarRelatorio(Eleicao &eleicao, int tipoDeputado){
     relatorioCinco(eleicao, eleitosOrdenados, candidatosOrdenados);
 
     relatorioSeis(eleicao, candidatosOrdenados);
+
+    relatorioNove(eleicao, eleitosOrdenados);
 }
 
 vector<Candidato*> relatorioDois(Eleicao &eleicao){
@@ -330,7 +348,7 @@ vector<Candidato*> relatorioDois(Eleicao &eleicao){
         int i=1;
 
         for (Candidato *c : candidatosEleitosOrdenados) {
-            cout << i << " - " << c->getNome() << "(" << c->getPartido().getSiglaPartido() << ", " << c->getNumVotos() << " votos)"<< std::endl;
+            cout << i << " - " << c->getNome() << "(" << c->getPartido()->getSiglaPartido() << ", " << c->getNumVotos() << " votos)"<< std::endl;
             i++;    
         }
 
@@ -359,7 +377,7 @@ vector<Candidato*> relatorioDois(Eleicao &eleicao){
                 idx++;
             }
 
-            cout << j << " - " << c->getNome() << "(" << c->getPartido().getSiglaPartido() << ", " << c->getNumVotos() << " votos)"<< endl;
+            cout << j << " - " << c->getNome() << "(" << c->getPartido()->getSiglaPartido() << ", " << c->getNumVotos() << " votos)"<< endl;
             j++;
         }
 
@@ -367,7 +385,7 @@ vector<Candidato*> relatorioDois(Eleicao &eleicao){
         
         int i=0;
         for(Candidato *c : candidatosQueSeriamEleitos){
-           cout << idxCandidatosQueSeriamEleitos[i] << " - " << c->getNome() << "(" << c->getPartido().getSiglaPartido() << ", " << c->getNumVotos() << " votos)"<< endl;
+           cout << idxCandidatosQueSeriamEleitos[i] << " - " << c->getNome() << "(" << c->getPartido()->getSiglaPartido() << ", " << c->getNumVotos() << " votos)"<< endl;
            i++; 
         }
         
@@ -398,7 +416,7 @@ vector<Candidato*> relatorioDois(Eleicao &eleicao){
 
         int i=0;
         for(Candidato *c : candidatosQueNaoSeriamEleitos){
-            cout << idxCandidato[i] << " - " << c->getNome() << "(" << c->getPartido().getSiglaPartido() << ", " << c->getNumVotos() << " votos)"<< endl;   
+            cout << idxCandidato[i] << " - " << c->getNome() << "(" << c->getPartido()->getSiglaPartido() << ", " << c->getNumVotos() << " votos)"<< endl;   
             i++;
         }
     }
@@ -433,3 +451,10 @@ vector<Candidato*> relatorioDois(Eleicao &eleicao){
             i++;
         }
     }
+
+void relatorioNove(Eleicao eleicao, vector<Candidato*> candidatosEleitos){
+
+    cout << "\nEleitos, por gênero:" << endl;
+
+    eleicao.calculaPorcentagemGenero(candidatosEleitos);
+}

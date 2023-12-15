@@ -15,9 +15,9 @@ private:
     std::map<string, Candidato*> candidatosEleitos;
     std::map<string, Partido*> partidos;
     int tipoDeputado;
-    int numVotosNominais;
-    int numVotosLegenda;
-    int numVotosTotais;
+    int numVotosNominais=0;
+    int numVotosLegenda=0;
+    int numVotosTotais=0;
 
 public:
     Eleicao(int tipoDeputado);
@@ -37,8 +37,9 @@ public:
     void somaVotosLegenda(int numVotos);
     vector<Candidato*> ordenaCandidatosEleitosPorVoto();
     vector<Candidato*> ordenaCandidatosPorVoto(int tipoDeputado);
-    void calculaVotosNominais(vector<Candidato*> candidatos);
+    void calculaVotosNominais(vector<Candidato*> &candidatos);
     vector<Partido*> ordenaVotosPartidos();
+    void calculaPorcentagemGenero(vector<Candidato*> candidatosEleitos);
 };
 
 void leitura_candidatos(Eleicao &eleicao, char path[]);
@@ -48,5 +49,6 @@ vector<Candidato*> relatorioDois(Eleicao &eleicao);
 vector<Candidato*> relatorioTresEQuatro(Eleicao &eleicao, int TipoDeputado);
 void relatorioCinco(Eleicao eleicao, vector<Candidato*> candidatosEleitosOrdenados, vector<Candidato*> candidatosOrdenados);
 void relatorioSeis(Eleicao eleicao, vector<Candidato*> candidatos);
+void relatorioNove(Eleicao eleicao, vector<Candidato*> candidatosEleitos);
 
 #endif

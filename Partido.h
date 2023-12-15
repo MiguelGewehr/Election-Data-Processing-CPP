@@ -6,9 +6,9 @@ class Partido
 {
     string numPartido;
     string siglaPartido;
-    int numVotos;
-    int numVotosLegenda;
-    int numVotosNominal;
+    int numVotos=0;
+    int numVotosLegenda=0;
+    int numVotosNominal=0;
     int numCandidatosEleitos=0;
    // Candidato candidatoMenosVotado;
 
@@ -22,9 +22,9 @@ public:
     int getNumCandidatosEleitos() const;
     int getVotosNominal() const;
     int getNumVotos() const;
-    int getVotosLegenda();
-    /*void somaVotos();
-    Candidato getCandidatoMenosVotado();
+    void somaVotos();
+    int getVotosLegenda() const;
+    /*Candidato getCandidatoMenosVotado();
     void setCandidatoMenosVotado(Candidato candidatoMenosVotado);
     */
 };

@@ -7,8 +7,8 @@ string Candidato::getNumCandidato() const{
     return this->numCandidato;
 }
 
-Partido Candidato::getPartido(){
-    return *(this->partido);
+Partido* Candidato::getPartido(){
+    return this->partido;
 }
 
 bool Candidato::getVotosVaoParaLegenda() const{
@@ -33,4 +33,8 @@ int Candidato::getCargo() const{
 
 bool Candidato::getCandidatoEleito() const{
     return this->candidatoEleito;
+}
+
+int Candidato::getGenero(){
+    return this->genero;
 }

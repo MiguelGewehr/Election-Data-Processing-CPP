@@ -34,6 +34,10 @@ int Partido::getNumVotos() const{
     return this->numVotos;
 }
 
-int Partido::getVotosLegenda(){
+int Partido::getVotosLegenda() const{
     return this->numVotosLegenda;
+}
+
+void Partido::somaVotos(){
+    this->numVotos = this->numVotosNominal + numVotosLegenda;
 }
