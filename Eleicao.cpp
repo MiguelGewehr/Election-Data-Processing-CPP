@@ -177,9 +177,9 @@ void Eleicao::calculaPorcentagemGenero(vector<Candidato *> candidatosEleitos)
     double porcentagemM = mulher * 100 / candidatosEleitos.size();
     double porcentagemH = homem * 100 / candidatosEleitos.size();
 
-    cout << "Feminino:  " << mulher << " (" << porcentagemM << "%)" << endl;
-    cout << "Masculino: " << homem << " (" << porcentagemH << "%)" << endl;
-}
+        cout << "Feminino:  " << mulher << " (" << porcentagemM << "%)" << endl;
+        cout << "Masculino: " << homem << " (" << porcentagemH << "%)" << endl;    
+}    
 
 std::string removerAspas(const std::string &str)
 {
@@ -389,6 +389,8 @@ void gerarRelatorio(Eleicao &eleicao, int tipoDeputado)
     relatorioSeis(eleicao, candidatosOrdenados);
 
     relatorioNove(eleicao, eleitosOrdenados);
+
+    relatorioDez(eleicao);  
 }
 
 vector<Candidato *> relatorioDois(Eleicao &eleicao)
@@ -526,8 +528,7 @@ void relatorioCinco(Eleicao eleicao, vector<Candidato *> candidatosEleitosOrdena
     }
 }
 
-void relatorioSeis(Eleicao eleicao, vector<Candidato *> candidatos)
-{
+    void relatorioSeis(Eleicao eleicao, vector<Candidato*> candidatos){
 
     eleicao.calculaVotosNominais(candidatos);
 
@@ -573,4 +574,16 @@ void relatorioNove(Eleicao eleicao, vector<Candidato *> candidatosEleitos)
     cout << "\nEleitos, por gênero:" << endl;
 
     eleicao.calculaPorcentagemGenero(candidatosEleitos);
+}
+
+void relatorioDez(Eleicao eleicao){
+
+    eleicao.somaVotosTotais();
+
+    double porcentagemVotoNominal = (eleicao.getNumVotosNominais()*100.0)/eleicao.getNumVotosTotais();
+    double porcentagemVotoLegenda = (eleicao.getNumVotosLegenda()*100.0)/eleicao.getNumVotosTotais();
+
+    cout << "\nTotal de votos válidos:    " << eleicao.getNumVotosTotais() << endl;
+    cout << "Total de votos nominais:   " << eleicao.getNumVotosNominais() << " (" << porcentagemVotoNominal << "%)" << endl;
+    cout << "Total de votos de legenda: " << eleicao.getNumVotosLegenda() << " (" << porcentagemVotoLegenda << "%)" << endl;
 }
