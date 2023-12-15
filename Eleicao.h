@@ -20,7 +20,7 @@ private:
 public:
     Eleicao(int tipoDeputado);
     int getNumVotosTotais();
-    int getTipoDeputado();
+    int getTipoDeputado() const;
     int getNumVotosLegenda();
     void addCandidato(Candidato c);
     void addCandidatoEleito(Candidato c);
@@ -29,5 +29,8 @@ public:
     void printaCandidatos();
     int getNumCandidatosEleitos();
 };
+
+void leitura_candidatos(Eleicao eleicao, char path[]);
+void leitura_votacao(Eleicao eleicao, char path[]);
 
 #endif
