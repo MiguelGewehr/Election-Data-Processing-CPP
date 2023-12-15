@@ -1,0 +1,53 @@
+92,96c92,126
+< 23 - PRTB - 28, 0 voto (0 nominal e 0 de legenda), 0 candidato eleito
+< 24 - PCO - 29, 0 voto (0 nominal e 0 de legenda), 0 candidato eleito
+< 25 - PSC - 20, 0 voto (0 nominal e 0 de legenda), 0 candidato eleito
+< 26 - AVANTE - 70, 0 voto (0 nominal e 0 de legenda), 0 candidato eleito
+< 27 - PTB - 14, 0 voto (0 nominal e 0 de legenda), 0 candidato eleito
+---
+> 23 - PTB - 14, 0 voto (0 nominal e 0 de legenda), 0 candidato eleito
+> 24 - PSC - 20, 0 voto (0 nominal e 0 de legenda), 0 candidato eleito
+> 25 - PRTB - 28, 0 voto (0 nominal e 0 de legenda), 0 candidato eleito
+> 26 - PCO - 29, 0 voto (0 nominal e 0 de legenda), 0 candidato eleito
+> 27 - AVANTE - 70, 0 voto (0 nominal e 0 de legenda), 0 candidato eleito
+> 
+> Primeiro e último colocados de cada partido:
+> 1 - PP - 11, NICOLAU JUNIOR (11122, 16.636 votos) / TENENTE JARDIM (11211, 13 votos)
+> 2 - MDB - 15, EMERSON JARUDE (15000, 8.540 votos) / KELLY CRISTINA (15001, 10 votos)
+> 3 - UNIÃO - 44, GILBERTO LIRA (44444, 8.407 votos) / SOCORRO AMORIM (44044, 39 votos)
+> 4 - REPUBLICANOS - 10, CLODOALDO RODRIGUES (10555, 8.227 votos) / SARGENTO MENDONÇA (10190, 73 votos)
+> 5 - PODE - 19, ANDRÉ DA DROGA VALE (19444, 8.157 votos) / SAVANA SANTIAGO (19192, 53 votos)
+> 6 - PDT - 12, PEDRO LONGO (12333, 7.732 votos) / ROGGER WINS (12247, 4 votos)
+> 7 - PSDB - 45, LUIZ GONZAGA (45121, 6.680 votos) / DAIANE SILVA (45011, 1 voto)
+> 8 - PSB - 40, ADAILTON CRUZ (40222, 6.157 votos) / RAIMUNDA QUEIROZ (40555, 16 votos)
+> 9 - PC do B - 65, EDVALDO MAGALHÃES (65123, 5.822 votos) / WAL (65654, 32 votos)
+> 10 - PL - 22, AFONSO FERNANDES (22223, 5.731 votos) / ROSE DA ENDEMIAS (22678, 29 votos)
+> 11 - PSD - 55, PABLO BREGENSE (55777, 5.386 votos) / KEKEL MENEZES (55556, 39 votos)
+> 12 - PT - 13, DANIEL ZEN (13123, 4.880 votos) / MARIA VAI COM AS OUTRAS (13444, 39 votos)
+> 13 - SOLIDARIEDADE - 77, SIDA DO MERCANTIL SÃO PAULO  (77987, 4.082 votos) / ANA PAULA HONORATO (77010, 37 votos)
+> 14 - PROS - 90, RAIMUNDINHO DA SAUDE (90000, 3.558 votos) / BRIGIDO OLIVEIRA (90444, 5 votos)
+> 15 - PATRIOTA - 51, LEONCIO CASTRO (51444, 2.711 votos) / UENA PAULA (51777, 3 votos)
+> 16 - PSOL - 50, NOVA S (50222, 623 votos) / MÔNICA DINIZ (50999, 14 votos)
+> 17 - CIDADANIA - 23, NENO (23777, 243 votos) / NEDELY SOUSA (23111, 1 voto)
+> 18 - DC - 27, MANOEL IZO (27012, 175 votos) / JOANNA AYSHA (27888, 5 votos)
+> 19 - PV - 43, ITAMARA SOUZA (43123, 107 votos) / ANGELINO DO PANDEIRO (43700, 86 votos)
+> 20 - AGIR - 36, JAQUELINE MEDEIROS (36333, 74 votos) / AMBROZIO MOURA (36200, 0 voto)
+> 21 - PMN - 33, PR ANTONIO ALMEIDA (33242, 53 votos) / NAZARÉ DO TACACÁ (33123, 18 votos)
+> 
+> Eleitos, por faixa etária (na data da eleição):
+>       Idade < 30: 0 (0,00%)
+> 30 <= Idade < 40: 6 (25,00%)
+> 40 <= Idade < 50: 8 (33,33%)
+> 50 <= Idade < 60: 5 (20,83%)
+> 60 <= Idade     : 5 (20,83%)
+99,100c129,135
+< Feminino:  3 (12%)
+< Masculino: 21 (87%)
+---
+> Feminino:  3 (12,50%)
+> Masculino: 21 (87,50%)
+> 
+> Total de votos válidos:    435.770
+> Total de votos nominais:   411.114 (94,34%)
+> Total de votos de legenda: 24.656 (5,66%)
+> 
