@@ -5,3 +5,7 @@ Partido::Partido(string numPartido, string siglaPartido) : numPartido(numPartido
 string Partido::getNumPartido() const{
     return this->numPartido;
 }
+
+void Partido::incrementaNumCandidatosEleitos(){
+    this->numCandidatosEleitos++;
+}

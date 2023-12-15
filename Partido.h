@@ -9,12 +9,13 @@ class Partido
     int numVotos;
     int numVotosLegenda;
     int numVotosNominal;
-    int numCandidatosEleitos;
+    int numCandidatosEleitos=0;
    // Candidato candidatoMenosVotado;
 
 public:
     Partido(string numPartido, string siglaPartido);
     string getNumPartido() const;
+    void incrementaNumCandidatosEleitos();
     /*void somaVotos();
     string getSiglaPartido();
     int getNumVotos();
@@ -25,7 +26,6 @@ public:
     void somaVotosLegenda(int numVotos);
     void somaVotosNominal(int numVotos);
     int getNumCandidatosEleitos();
-    void incrementaNumCandidatosEleitos();
     */
 };
 

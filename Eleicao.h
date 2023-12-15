@@ -23,8 +23,8 @@ public:
     int getNumVotosTotais();
     int getTipoDeputado() const;
     int getNumVotosLegenda();
-    void addCandidato(Candidato c);
-    void addCandidatoEleito(Candidato c);
+    void addCandidato(Candidato *c);
+    void addCandidatoEleito(Candidato *c);
     int getNumVotosNominais();
     void addPartido(Partido *p);
     void printaCandidatos();
@@ -33,7 +33,8 @@ public:
     Partido* getPartido(string key);
 };
 
-void leitura_candidatos(Eleicao eleicao, char path[]);
-void leitura_votacao(Eleicao eleicao, char path[]);
+void leitura_candidatos(Eleicao &eleicao, char path[]);
+void leitura_votacao(Eleicao &eleicao, char path[]);
+void gerarRelatorio(Eleicao &eleicao);
 
 #endif

@@ -26,7 +26,7 @@ public:
     Candidato(int cargo, string numCandidato, string nomeCandidato, Partido *partido, Federacao federacao, string dataNascimento, int genero, bool votosVaoParaLegenda, bool candidatoEleito);
     void somaVotos(int numVotos);
     int getCargo();
-    string getNumCandidato();
+    string getNumCandidato() const;
     string getNomeCandidato();
     Partido getPartido();
     Federacao getFederacao();

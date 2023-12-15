@@ -27,6 +27,18 @@ void Eleicao::addPartido(Partido *p){
     this->partidos.insert({p->getNumPartido(),p});
 }
 
+void Eleicao::addCandidatoEleito(Candidato *c){
+    this->candidatosEleitos.insert({c->getNumCandidato(), c});
+}
+
+void Eleicao::addCandidato(Candidato *c){
+    this->candidatos.insert({c->getNumCandidato(), c});
+}
+
+int Eleicao::getNumCandidatosEleitos(){
+    return this->candidatosEleitos.size();
+}
+
 std::string removerAspas(const std::string &str)
 {
     std::string novaString = str;
@@ -48,7 +60,7 @@ void leLixo(istringstream &linhaStream, int n){
         getline(linhaStream, lixo, ';');
 }
 
-void leitura_candidatos(Eleicao eleicao, char path[])
+void leitura_candidatos(Eleicao &eleicao, char path[])
 {
 
     ifstream inputStream(path);
@@ -129,31 +141,36 @@ void leitura_candidatos(Eleicao eleicao, char path[])
         Partido *partido;
 
         if(!existePartido){
-            Partido partidoAux(numPartido, siglaPartido);
-            partido = &partidoAux;
+            partido = new Partido(numPartido, siglaPartido);
             eleicao.addPartido(partido);
         }
-        else{
+        else{ 
             partido = eleicao.getPartido(numPartido);
         }
-
+        
         if (situacaoCandidato == "2" || situacaoCandidato == "16" || votosVaoParaLegenda){
 
             Federacao federacao(numFederacao);
 
-            Candidato candidato(cargo, numCandidato, nomeCandidato, partido, federacao, dataNascimento, genero, votosVaoParaLegenda, candidatoEleito);
+            Candidato *candidato = new Candidato(cargo, numCandidato, nomeCandidato, partido, federacao, dataNascimento, genero, votosVaoParaLegenda, candidatoEleito);
+
+            if(candidatoEleito && cargo == eleicao.getTipoDeputado()){
+                eleicao.addCandidatoEleito(candidato);
+                candidato->getPartido().incrementaNumCandidatosEleitos();
+            }
+
+            eleicao.addCandidato(candidato);
         }
     }
     inputStream.close();
 }
 
-void leitura_votacao(Eleicao eleicao, char path[])
+void leitura_votacao(Eleicao &eleicao, char path[])
 {
 
     ifstream inputStream(path);
     string linha;
     getline(inputStream, linha); // cabeçalho
-    cout << linha << endl;
     int i=0;
 
     while (getline(inputStream, linha))
@@ -182,14 +199,15 @@ void leitura_votacao(Eleicao eleicao, char path[])
 
             aux = removerAspas(aux);
 
-            cout << aux << endl;
-
-            /*int numVotos = stoi(aux);
-
-            printf("%d\n", numVotos);*/
+            
+            int numVotos = stoi(aux);
         }
         
     }
         printf("%d %d\n",i, eleicao.getTipoDeputado());
 }
 
+void gerarRelatorio(Eleicao &eleicao){
+    
+    printf("Número de vagas: %d\n\n", eleicao.getNumCandidatosEleitos());
+}
