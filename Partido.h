@@ -13,8 +13,9 @@ class Partido
    // Candidato candidatoMenosVotado;
 
 public:
+    Partido(string numPartido, string siglaPartido);
+    string getNumPartido() const;
     /*void somaVotos();
-    string getNumPartido();
     string getSiglaPartido();
     int getNumVotos();
     Candidato getCandidatoMenosVotado();

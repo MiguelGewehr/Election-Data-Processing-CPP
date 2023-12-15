@@ -10,6 +10,23 @@ int Eleicao::getTipoDeputado() const{
     return this->tipoDeputado;
 }
 
+bool Eleicao::partidoExiste(string key){
+    auto it = this->partidos.find(key);
+    if (it != this->partidos.end()) 
+        return true;
+    else 
+        return false;      
+}
+
+Partido* Eleicao::getPartido(string key){
+    auto it = this->partidos.find(key);
+    return (it->second);
+}
+
+void Eleicao::addPartido(Partido *p){
+    this->partidos.insert({p->getNumPartido(),p});
+}
+
 std::string removerAspas(const std::string &str)
 {
     std::string novaString = str;
@@ -37,8 +54,7 @@ void leitura_candidatos(Eleicao eleicao, char path[])
     ifstream inputStream(path);
     string linha;
     getline(inputStream, linha); // cabeçalho
-    cout << linha << endl;
-
+    
     while (getline(inputStream, linha))
     {
         istringstream linhaStream(linha);
@@ -54,49 +70,79 @@ void leitura_candidatos(Eleicao eleicao, char path[])
         leLixo(linhaStream, 2);
 
         getline(linhaStream, aux, ';');
-        int nr_candidato = stoi(removerAspas(aux));
+        string numCandidato = removerAspas(aux);
         leLixo(linhaStream, 1);
         getline(linhaStream, aux, ';');
 
-        string nm_urna_candidato = removerAspas(aux);
+        string nomeCandidato = removerAspas(aux);
 
         leLixo(linhaStream, 8);
 
         getline(linhaStream, aux, ';');
-        int nr_partido = stoi(removerAspas(aux));
+        string numPartido = removerAspas(aux);
         getline(linhaStream, aux, ';');
-        string sg_partido = removerAspas(aux);
+        string siglaPartido = removerAspas(aux);
 
         leLixo(linhaStream, 1);
         getline(linhaStream, aux, ';');
-        int nr_federacao = stoi(removerAspas(aux)); // numero da fereacao (-1 = sem federacao)
+        int numFederacao = stoi(removerAspas(aux)); // numero da fereacao (-1 = sem federacao)
 
         leLixo(linhaStream, 11);
         
         getline(linhaStream, aux, ';');
-        string data_nascimento = aux;
+        string dataNascimento = aux;
 
         leLixo(linhaStream, 2);
         
         getline(linhaStream, aux, ';');
-        int cd_genero = stoi(removerAspas(aux)); // 2-masculino e 4-feminino
+        int genero = stoi(removerAspas(aux)); // 2-masculino e 4-feminino
 
         leLixo(linhaStream, 10);
 
         getline(linhaStream, aux, ';');
         int sit_eleito = stoi(removerAspas(aux));
 
+        bool candidatoEleito;
+
+        if(sit_eleito == 2 || sit_eleito == 3)
+            candidatoEleito = true;
+        else
+            candidatoEleito = false;
+
         leLixo(linhaStream, 10);
 
         getline(linhaStream, aux, ';');
         string destinacao_votos = removerAspas(aux); // se for valido(legenda) entra para a contagem de legenda
 
+        bool votosVaoParaLegenda;
+
+        if(destinacao_votos == "Válido (legenda)")
+            votosVaoParaLegenda = true;
+        else
+            votosVaoParaLegenda = false;
+
         getline(linhaStream, aux, ';');
-        string cd_situacao_candidato_tot = removerAspas(aux); // 2 ou 16 são contabilizados
+        string situacaoCandidato = removerAspas(aux); // 2 ou 16 são contabilizados
 
-        cout << cd_situacao_candidato_tot << endl;
+        bool existePartido = eleicao.partidoExiste(numPartido);
 
-        // cout << sit_eleito << endl;
+        Partido *partido;
+
+        if(!existePartido){
+            Partido partidoAux(numPartido, siglaPartido);
+            partido = &partidoAux;
+            eleicao.addPartido(partido);
+        }
+        else{
+            partido = eleicao.getPartido(numPartido);
+        }
+
+        if (situacaoCandidato == "2" || situacaoCandidato == "16" || votosVaoParaLegenda){
+
+            Federacao federacao(numFederacao);
+
+            Candidato candidato(cargo, numCandidato, nomeCandidato, partido, federacao, dataNascimento, genero, votosVaoParaLegenda, candidatoEleito);
+        }
     }
     inputStream.close();
 }

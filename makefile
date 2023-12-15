@@ -1,5 +1,5 @@
 main: main.o Eleicao.o Candidato.o Federacao.o Partido.o 
-	g++ -std=c++17 -o main main.o Eleicao.o Partido.o Candidato.o 
+	g++ -std=c++17 -o main main.o Eleicao.o Partido.o Candidato.o Federacao.o 
 
 main.o: main.cpp Eleicao.h Candidato.h Federacao.h Partido.h
 	g++ -std=c++17 -c -o main.o main.cpp

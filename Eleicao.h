@@ -3,15 +3,16 @@
 #include <map>
 #include <string>
 #include "Candidato.h"
+#include "Partido.h"
 
 using namespace std;
 
 class Eleicao
 {
 private:
-    std::map<string, Candidato> candidatos;
-    std::map<string, Candidato> candidatosEleitos;
-    std::map<string, Partido> partidos;
+    std::map<string, Candidato*> candidatos;
+    std::map<string, Candidato*> candidatosEleitos;
+    std::map<string, Partido*> partidos;
     int tipoDeputado;
     int numVotosNominais;
     int numVotosLegenda;
@@ -25,9 +26,11 @@ public:
     void addCandidato(Candidato c);
     void addCandidatoEleito(Candidato c);
     int getNumVotosNominais();
-    void addPartido(Partido p);
+    void addPartido(Partido *p);
     void printaCandidatos();
     int getNumCandidatosEleitos();
+    bool partidoExiste(string key);
+    Partido* getPartido(string key);
 };
 
 void leitura_candidatos(Eleicao eleicao, char path[]);
