@@ -25,13 +25,13 @@ class Candidato
 public:
     Candidato(int cargo, string numCandidato, string nomeCandidato, Partido *partido, Federacao federacao, string dataNascimento, int genero, bool votosVaoParaLegenda, bool candidatoEleito);
     void somaVotos(int numVotos);
-    int getCargo();
+    int getCargo() const;
     string getNumCandidato() const;
     string getNome() const;
     Partido getPartido();
     Federacao getFederacao();
     string getDataNascimento();
-    bool getCandidatoEleito();
+    bool getCandidatoEleito() const;
     int getGenero();
     bool getVotosVaoParaLegenda() const;
     int getNumVotos() const;

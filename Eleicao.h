@@ -36,11 +36,17 @@ public:
     Candidato* getCandidato(string key);
     void somaVotosLegenda(int numVotos);
     vector<Candidato*> ordenaCandidatosEleitosPorVoto();
+    vector<Candidato*> ordenaCandidatosPorVoto(int tipoDeputado);
+    void calculaVotosNominais(vector<Candidato*> candidatos);
+    vector<Partido*> ordenaVotosPartidos();
 };
 
 void leitura_candidatos(Eleicao &eleicao, char path[]);
 void leitura_votacao(Eleicao &eleicao, char path[]);
-void gerarRelatorio(Eleicao &eleicao);
+void gerarRelatorio(Eleicao &eleicao, int tipoDeputado);
 vector<Candidato*> relatorioDois(Eleicao &eleicao);
+vector<Candidato*> relatorioTresEQuatro(Eleicao &eleicao, int TipoDeputado);
+void relatorioCinco(Eleicao eleicao, vector<Candidato*> candidatosEleitosOrdenados, vector<Candidato*> candidatosOrdenados);
+void relatorioSeis(Eleicao eleicao, vector<Candidato*> candidatos);
 
 #endif

@@ -26,11 +26,9 @@ int main(int argc, char* argv[])
     
     leitura_candidatos(eleicao, argv[2]);
 
-    cout << eleicao.getNumCandidatosEleitos() << endl;
-
     leitura_votacao(eleicao, argv[3]);
 
-    gerarRelatorio(eleicao);
+    gerarRelatorio(eleicao, tipoDeputado);
 
     return 0;
 }

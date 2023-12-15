@@ -17,15 +17,15 @@ public:
     string getNumPartido() const;
     void incrementaNumCandidatosEleitos();
     void somaVotosLegenda(int numVotos);
-    /*void somaVotos();
     string getSiglaPartido();
-    int getNumVotos();
+    void somaVotosNominal(int numVotos);
+    int getNumCandidatosEleitos() const;
+    int getVotosNominal() const;
+    int getNumVotos() const;
+    int getVotosLegenda();
+    /*void somaVotos();
     Candidato getCandidatoMenosVotado();
     void setCandidatoMenosVotado(Candidato candidatoMenosVotado);
-    int getVotosLegenda();
-    int getVotosNominal();
-    void somaVotosNominal(int numVotos);
-    int getNumCandidatosEleitos();
     */
 };
 

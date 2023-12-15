@@ -26,3 +26,11 @@ int Candidato::getNumVotos() const{
 string Candidato::getNome() const{
     return this->nomeCandidato;
 }
+
+int Candidato::getCargo() const{
+    return this->cargo;
+}
+
+bool Candidato::getCandidatoEleito() const{
+    return this->candidatoEleito;
+}
