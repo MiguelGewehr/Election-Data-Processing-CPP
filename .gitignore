@@ -1,0 +1,11 @@
+#arquivos da IDE
+.vscode/
+
+# Arquivos de sistema (macOS)
+.DS_Store
+
+# Diretório de arquivos objeto gerados pelo Makefile
+obj/
+
+# Executável final gerado pelo Makefile
+deputados

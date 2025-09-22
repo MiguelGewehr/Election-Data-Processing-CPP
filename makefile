@@ -1,20 +1,54 @@
-main: main.o Eleicao.o Candidato.o Federacao.o Partido.o 
-	g++ -std=c++17 -o main main.o Eleicao.o Partido.o Candidato.o Federacao.o 
+# Configurações
+CXX      := g++
+CXXFLAGS := -std=c++20 -Wall -Wextra -O2 -g
+TARGET   := deputados
 
-main.o: main.cpp Eleicao.h Candidato.h Federacao.h Partido.h
-	g++ -std=c++17 -c -o main.o main.cpp
+# Busca Automática de Arquivos
+SRCDIR  := src
+OBJDIR  := obj
+SOURCES := $(shell find $(SRCDIR) -name '*.cpp')
+OBJECTS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
+DEPS    := $(OBJECTS:.o=.d) 
 
-Eleicao.o: Eleicao.cpp Eleicao.h Partido.h Candidato.h
-	g++ -std=c++17 -c -o Eleicao.o Eleicao.cpp
+# Regras Principais 
 
-Candidato.o: Candidato.cpp Candidato.h Partido.h Federacao.h
-	g++ -std=c++17 -c -o Candidato.o Candidato.cpp
+# Regra padrão: compila o alvo principal
+all: $(TARGET)
 
-Federacao.o: Federacao.cpp Federacao.h
-	g++ -std=c++17 -c -o Federacao.o Federacao.cpp
+# Regra para linkar o executável final
+$(TARGET): $(OBJECTS)
+	@echo "Linkando executável..."
+	$(CXX) $^ -o $@
+	@echo "Executável '$(TARGET)' criado com sucesso!"
 
-Partido.o: Partido.cpp Partido.h
-	g++ -std=c++17 -c -o Partido.o Partido.cpp
+# Regra para compilar os arquivos .cpp em arquivos objeto .o
+# Também cria os arquivos de dependência .d (-MMD -MP)
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	@mkdir -p $(dir $@)
+	@echo "Compilando $<..."
+	$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
 
+# Limpa todos os arquivos gerados
+clean:
+	@echo "Limpando arquivos compilados..."
+	@rm -rf $(OBJDIR) $(TARGET)
+	@echo "Limpeza concluída."
 
+# Inclui as dependências geradas. O '-' ignora erros se os arquivos não existirem.
+-include $(DEPS)
 
+# Targets Utilitários
+
+# Executa o programa para deputados federais
+run-federal: $(TARGET)
+	./$(TARGET) --federal input/acre/candidatos.csv input/acre/votacao.csv 02/10/2022
+
+# Executa o programa para deputados estaduais
+run-estadual: $(TARGET)
+	./$(TARGET) --estadual input/acre/candidatos.csv input/acre/votacao.csv 02/10/2022
+
+# Limpa e recompila o projeto
+rebuild: clean all
+
+# Define targets que não representam arquivos
+.PHONY: all clean rebuild run-federal run-estadual
